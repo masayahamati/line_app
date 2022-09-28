@@ -27,7 +27,7 @@ class Chat extends Model
                     })
                     ->orderBy("created_at")
                     ->get();
-        /*ここでユーザーがログインしている人である条件とユーザーが受け取ったfriend_idである人の条件で情報を取得している
+        /*ここでユーザーが、ログインしている人である条件とユーザーが、受け取ったfriend_idである人の条件で情報を取得している
         これによって会話している人によって吹き出しの向きをラインのように変えることができる*/
     }
     /*public static function getFriendContent($friend_id){

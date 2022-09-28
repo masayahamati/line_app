@@ -36,6 +36,24 @@ class ChatController extends Controller
         Chat::create($input);
         return redirect(route("index",$input["friend_id"]));
     }
+    
+    public function friend_serch(Request $request){
+        $serch_friends=User::serch_id($request->name)->all()[0]->friends_passive;
+        /*この処理によってある名前の人のuserテーブルのidが何なのか調べている
+        また多次元配列になっていたので[0]で要素にアクセスしている。
+        これはusermodelのインスタンスにアクセスしており、userインスタンスだとusermodelで定義した
+        メソッドにアクセスできる。今回はusermodelクラスのfriendsメソッドにアクセスしている*/
+        /*serch_friendsには名前から取得したidとfriend_idが等しいものを全権取得して代入している*/
+        foreach($serch_friends as $serch_friend){
+            if($serch_friend["id"]==Auth::id()){
+                ddd("一致しました");
+                return redirect(route("whole"));
+            }
+        }
+        return redirect(route("whole"));
+
+        
+    }
 }
 
 /*$passive_friend_infos=Auth::user()->friends_passive;

@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="csrf-token" content="{{csrf_token()}}">
     <link rel="stylesheet" href="/css/style.css">
 </head>
 <body>
@@ -24,6 +25,12 @@
             </tr>
             @endforeach
         </tbody>
-    </table>  
+    </table>
+    <h1 class="friend_serch">友達検索</h1>
+    <form method="POST" action="/friend_serch" class="form">
+        @csrf
+        <input type="text" name="name" value="友達検索">
+        <button type="submit">送信</button>
+    </form>
 </body>
 </html>

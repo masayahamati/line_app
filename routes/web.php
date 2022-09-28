@@ -26,9 +26,12 @@ Route::get('/dashboard', function () {
 require __DIR__.'/auth.php';
 
 
+
 Route::get("/whole","App\Http\Controllers\ChatController@whole")->name("whole");
 
 Route::get("/{id}","App\Http\Controllers\ChatController@index")->name("index");
+
+Route::post("/friend_serch","App\Http\Controllers\ChatController@friend_serch")->name("friend_serch");
 
 Route::post("/store","App\Http\Controllers\ChatController@store")->name("store");
 

@@ -51,4 +51,8 @@ class User extends Authenticatable
     {
         return $this->belongsToMany(self::class,"friends","friend_id","user_id")->withTimestamps();
     }
+    
+    public static function serch_id($name){
+        return self::where("name",$name)->get();
+    }
 }
