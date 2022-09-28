@@ -41,4 +41,14 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+    public function friends()
+    {
+        return $this->belongsToMany(self::class,"friends","user_id","friend_id")->withTimestamps();
+    }
+    /*つまりuserの情報をとってくる時にこの関数を呼び出して情報を
+    取得することもできるということ*/
+     public function friends_passive()
+    {
+        return $this->belongsToMany(self::class,"friends","friend_id","user_id")->withTimestamps();
+    }
 }
