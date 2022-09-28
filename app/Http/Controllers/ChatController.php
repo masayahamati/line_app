@@ -38,6 +38,8 @@ class ChatController extends Controller
     }
     
     public function friend_serch(Request $request){
+        if(User::friend_exist($request->name)){
+        $friend_info=User::serch_id($request->name)->all()[0];
         $serch_friends=User::serch_id($request->name)->all()[0]->friends_passive;
         /*この処理によってある名前の人のuserテーブルのidが何なのか調べている
         また多次元配列になっていたので[0]で要素にアクセスしている。
@@ -46,16 +48,18 @@ class ChatController extends Controller
         /*serch_friendsには名前から取得したidとfriend_idが等しいものを全権取得して代入している*/
         foreach($serch_friends as $serch_friend){
             if($serch_friend["id"]==Auth::id()){
-                ddd("一致しました");
                 return redirect(route("whole"));
             }
-        }
+        } 	
+        Auth::user()->friends()->attach($friend_info["id"]);
         return redirect(route("whole"));
-
-        
+    }
+    else{
+        return redirect(route("whole"));
+    }
     }
 }
 
 /*$passive_friend_infos=Auth::user()->friends_passive;
-        逆にログインユーザーがどの人から友達追加されているかを取得する */
+逆にログインユーザーがどの人から友達追加されているかを取得する */
 

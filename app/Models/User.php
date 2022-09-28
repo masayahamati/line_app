@@ -55,4 +55,7 @@ class User extends Authenticatable
     public static function serch_id($name){
         return self::where("name",$name)->get();
     }
+    public static function friend_exist($name){
+        return self::where("name",$name)->exists();
+    }
 }
