@@ -24,11 +24,13 @@ class ChatController extends Controller
 
     public function whole(){
         $friend_infos=Auth::user()->friends;
+        $request_friend_infos=Auth::user()->request_friends_passive;
         /*多対多の場合modelに記載している、関数名に
         ->frinedsのようにアクセスすると情報を取得できる。
         今回はAuth::user()のインスタンスからfriends関数を指定して
         ログインユーザーの友達を全権取得している*/
-        return view("whole",["friend_infos"=>$friend_infos]);
+        return view("whole",["friend_infos"=>$friend_infos,
+                            "request_friend_infos"=>$request_friend_infos]);
     }
 
     public function store(ChatRequest $request){
@@ -48,15 +50,34 @@ class ChatController extends Controller
         /*serch_friendsには名前から取得したidとfriend_idが等しいものを全権取得して代入している*/
         foreach($serch_friends as $serch_friend){
             if($serch_friend["id"]==Auth::id()){
-                return redirect(route("whole"));
+                $friend_exist_bool=true;
+                return redirect(route("whole"))->with("friend_exist_bool",$friend_exist_bool);
+                /*redirect処理で変数を渡す場合、変数は一時的に保存すればいいものなのでsessionに保存される。
+                withメソッドは変数をviewに渡すための関数。
+                view側でこの変数を呼び出すときは {{ session('test') }}で呼び出す。*/
             }
         } 	
-        Auth::user()->friends()->attach($friend_info["id"]);
-        return redirect(route("whole"));
+        Auth::user()->request_friends()->attach($friend_info["id"]);
+        $frined_request_bool=true;
+        return redirect(route("whole"))->with("friend_request_bool",$frined_request_bool);
     }
     else{
-        return redirect(route("whole"));
+        $friendname_notexist_bool=true;
+        return redirect(route("whole"))->with("friendname_notexist_bool",$friendname_notexist_bool);
     }
+    }
+
+    public function request_permit(Request $request){
+        ddd($request->request=="permit");
+        /*途中*/
+        if($request->request=="permit"){
+            Auth::user()->friends()->attach($request->friend_id);
+            Auth::user()->request_friends_passive()->detach($request->friend_id);
+        }
+        else{
+            Auth::user()->request_friends_passive()->detach($request->friend_id);
+        }
+        return redirect(route("whole"));
     }
 }
 

@@ -33,6 +33,8 @@ Route::get("/{id}","App\Http\Controllers\ChatController@index")->name("index");
 
 Route::post("/friend_serch","App\Http\Controllers\ChatController@friend_serch")->name("friend_serch");
 
+Route::post("/request_permit","App\Http\Controllers\ChatController@request_permit")->name("request_permit");
+
 Route::post("/store","App\Http\Controllers\ChatController@store")->name("store");
 
 

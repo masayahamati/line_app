@@ -51,11 +51,23 @@ class User extends Authenticatable
     {
         return $this->belongsToMany(self::class,"friends","friend_id","user_id")->withTimestamps();
     }
+    public function request_friends()
+    {
+        return $this->belongsToMany(self::class,"friend_requests","user_id","request_friend_id")->withTimestamps();
+    }
+
+    public function request_friends_passive()
+    {
+        return $this->belongsToMany(self::class,"friend_requests","request_friend_id","user_id")->withTimestamps();
+    }
     
     public static function serch_id($name){
         return self::where("name",$name)->get();
     }
+
     public static function friend_exist($name){
         return self::where("name",$name)->exists();
     }
+
+
 }

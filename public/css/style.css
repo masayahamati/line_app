@@ -186,3 +186,13 @@ nav li:hover {
     margin: 10px auto;
     width: 150px;
 }
+
+ ul.error{
+    text-align: center;
+    list-style: none;
+    color: rgb(255, 0, 0);
+ }
+ div.error {
+     text-align: center;
+     color: rgb(255, 0, 0);
+ }
