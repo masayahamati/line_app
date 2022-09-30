@@ -8,6 +8,7 @@ use App\Models\Chat;
 use App\Models\image;
 use Auth;
 use App\Http\Requests\ChatRequest;
+use Illuminate\Support\Facades\Storage;
 
 class ChatController extends Controller
 {
@@ -19,7 +20,6 @@ class ChatController extends Controller
           /*ddd($contents[0]->created_at->format("'Y年m月d日 H時i分"));*/
           /*ddd($contents[0]->user_id);*/
           $user_image=image::get_user_image(Auth::id());
-          /*途中*/
         return view("index",["friend_info"=>$friend_info,
                             "user_info"=>$user_info,
                             "contents"=>$contents,
@@ -93,6 +93,7 @@ class ChatController extends Controller
             $path=$request->file('image')->store('image',"public");
             /*返り値に新たに作ったファイルのpathを返す。*/
             $db_save_ary=array("user_id"=>Auth::id(),"path"=>$path);
+            /*リサイズするならここでするべき*/
             image::create($db_save_ary);
 
             $contents=Chat::getContent($request->friend_id);
