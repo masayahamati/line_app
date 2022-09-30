@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\Chat;
+use App\Models\image;
 use Auth;
 use App\Http\Requests\ChatRequest;
 
@@ -17,9 +18,12 @@ class ChatController extends Controller
           /*ここでユーザー情報を取得これによりどの人が入力したものかを表示することができる */
           /*ddd($contents[0]->created_at->format("'Y年m月d日 H時i分"));*/
           /*ddd($contents[0]->user_id);*/
+          $user_image=image::get_user_image(Auth::id());
+          /*途中*/
         return view("index",["friend_info"=>$friend_info,
                             "user_info"=>$user_info,
-                            "contents"=>$contents]);
+                            "contents"=>$contents,
+                            "user_image"=>$user_image]);
     }
 
     public function whole(){
@@ -60,17 +64,18 @@ class ChatController extends Controller
         Auth::user()->request_friends()->attach($friend_info["id"]);
         $frined_request_bool=true;
         return redirect(route("whole"))->with("friend_request_bool",$frined_request_bool);
-    }
-    else{
+        }
+        else{
         $friendname_notexist_bool=true;
         return redirect(route("whole"))->with("friendname_notexist_bool",$friendname_notexist_bool);
-    }
+            }
     }
 
     public function request_permit(Request $request){
-        ddd($request->request=="permit");
-        /*途中*/
-        if($request->request=="permit"){
+        /*ddd($request->friend_request);*/
+        $request_friend_bool=((int) $request->friend_request);
+        /*文字列をint型にキャスト*/
+        if($request_friend_bool){
             Auth::user()->friends()->attach($request->friend_id);
             Auth::user()->request_friends_passive()->detach($request->friend_id);
         }
@@ -78,6 +83,35 @@ class ChatController extends Controller
             Auth::user()->request_friends_passive()->detach($request->friend_id);
         }
         return redirect(route("whole"));
+    }
+
+    public function image_store($id){
+        return view("image_store",["friend_id"=>$id]);
+    }
+    public function upload(Request $request){
+        if(file_exists($request->file("image"))){
+            $path=$request->file('image')->store('image',"public");
+            /*返り値に新たに作ったファイルのpathを返す。*/
+            $db_save_ary=array("user_id"=>Auth::id(),"path"=>$path);
+            image::create($db_save_ary);
+
+            $contents=Chat::getContent($request->friend_id);
+            $user_info=User::find(Auth::id());
+            $friend_info=User::find($request->friend_id);
+            $user_image=image::get_user_image(Auth::id());
+            return view("index",["friend_info"=>$friend_info,
+                                "user_info"=>$user_info,
+                                "contents"=>$contents,
+                                "user_image",$user_image]);
+        }
+        else{
+            return view("image_store",["friend_id"=>$request->friend_id]);
+        }
+        /*viewから送られてくるファイルはファイルインスタンスとして
+        ファイルを操作するためのメソッドを使うことができる。
+        file->storeでファイルをpublic/$dirに保存することができる
+        ディレクトリに保存ができても、どういう条件で取り出す、とかをするには
+        データベースに保存しておく必要がのでデータベースに画像のパスを保存しておく。*/
     }
 }
 

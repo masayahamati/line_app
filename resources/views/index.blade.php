@@ -17,7 +17,11 @@
         @foreach($contents as $content)
         @if($content->user_id==Auth::id())
     <li class="balloon-lef">
-        <p class="author"><img src="画像パス" /><br />{{$user_info->name}}</p>
+        @if(!is_null($user_image->path))
+        <p class="author"><a href='/image_store/{{$friend_info->id}}'><img src="{{Storage::url($user_image->path)}}"></a><br>{{$user_info->name}}</p>
+        @else
+        <p class="author"><a href='/image_store/{{$friend_info->id}}'><img src=#></a><br>{{$user_info->name}}</p>
+        @endif
         <p class="balloon">
             {{$content->content}}
         </p>
@@ -25,7 +29,7 @@
         @endif
         @if($content->user_id==$friend_info->id)
     <li class="balloon-rig">
-        <p class="author"><img src="画像パス" /><br />{{$friend_info->name}}</p>
+        <p class="author"><img src="画像パス"><br>{{$friend_info->name}}</p>
         <p class="balloon">
             {{$content->content}}
         </p>

@@ -41,8 +41,8 @@
                 <form method="POST" action="/request_permit">
                 @csrf
                 <input type="hidden" name="friend_id" value="{{$info['id']}}">
-                <td><input type="radio" name="request" value="permit">登録</td>
-                <td><input type="radio" name="request" value="not_permit">削除
+                <td><input type="radio" name="friend_request" value="1">登録</td>
+                <td><input type="radio" name="friend_request" value="0">削除
                     <button type="submit">送信</button></td>
                     <!--削除とボタンを一緒の表の中に組み込んでいる-->
                 </form>
