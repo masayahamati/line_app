@@ -12,7 +12,9 @@ class Chat extends Model
     protected $table="chats";
     protected $fillable=[
         "created_at",
-        "content"
+        "content",
+        "user_id",
+        "friend_id"
     ];
     public static function getContent($friend_id){
         $user_id=Auth::id();
@@ -25,6 +27,8 @@ class Chat extends Model
                     })
                     ->orderBy("created_at")
                     ->get();
+        /*ここでユーザーが、ログインしている人である条件とユーザーが、受け取ったfriend_idである人の条件で情報を取得している
+        これによって会話している人によって吹き出しの向きをラインのように変えることができる*/
     }
     /*public static function getFriendContent($friend_id){
         $user_id=Auth::id();

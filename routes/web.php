@@ -26,12 +26,20 @@ Route::get('/dashboard', function () {
 require __DIR__.'/auth.php';
 
 
+
 Route::get("/whole","App\Http\Controllers\ChatController@whole")->name("whole");
+
+Route::get("/image_store/{id}","App\Http\Controllers\ChatController@image_store")->name("image_store");
 
 Route::get("/{id}","App\Http\Controllers\ChatController@index")->name("index");
 
+Route::post("/friend_serch","App\Http\Controllers\ChatController@friend_serch")->name("friend_serch");
 
+Route::post("/request_permit","App\Http\Controllers\ChatController@request_permit")->name("request_permit");
 
+Route::post("/store","App\Http\Controllers\ChatController@store")->name("store");
+
+Route::post("/upload","App\Http\Controllers\ChatController@upload")->name("upload");
 
 
 

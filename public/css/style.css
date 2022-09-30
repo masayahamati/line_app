@@ -143,3 +143,56 @@ table tbody th {
         width: 100%;
     }
 }
+
+
+nav {
+    text-align: center;
+}
+
+nav ul {
+    margin: 0;
+    padding: 0;
+    font-size: 0;
+}
+
+nav ul li {
+    list-style: none;
+    display: inline-block;
+    width: 10%;
+    /* ここで項目の幅を指定します */
+    background-color: #333;
+    /* 背景色を指定します */
+    font-size: 16px;
+}
+
+nav ul li a {
+    text-decoration: none;
+    color: #fff;
+    /* 文字色を指定します */
+}
+
+nav li:hover {
+    opacity: 0.8;
+    /* hover時の不透明度を調整します */
+}
+
+
+.form {
+    margin: 10px auto;
+    width: 100px;
+}
+
+.friend_serch {
+    margin: 10px auto;
+    width: 150px;
+}
+
+ ul.error{
+    text-align: center;
+    list-style: none;
+    color: rgb(255, 0, 0);
+ }
+ div.error {
+     text-align: center;
+     color: rgb(255, 0, 0);
+ }
