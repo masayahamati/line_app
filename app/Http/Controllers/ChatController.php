@@ -27,7 +27,11 @@ class ChatController extends Controller
     }
 
     public function whole(){
-        $friend_infos=Auth::user()->friends;
+        $friend_infos=Auth::user()->friends->all();
+        $passive_friend_infos=Auth::user()->friends_passive->all();
+        /*友だち申請した方はデータベースにuserとして保存されないので友だちになったほうと
+        友だちになられた方の情報を全権取得している*/
+        $friend_infos=array_merge_recursive($friend_infos,$passive_friend_infos);
         $request_friend_infos=Auth::user()->request_friends_passive;
         /*多対多の場合modelに記載している、関数名に
         ->frinedsのようにアクセスすると情報を取得できる。
@@ -103,7 +107,7 @@ class ChatController extends Controller
             return view("index",["friend_info"=>$friend_info,
                                 "user_info"=>$user_info,
                                 "contents"=>$contents,
-                                "user_image",$user_image]);
+                                "user_image"=>$user_image]);
         }
         else{
             return view("image_store",["friend_id"=>$request->friend_id]);
