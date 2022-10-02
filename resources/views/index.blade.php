@@ -15,27 +15,27 @@
 <body>
     <ul class="commentlist">
         @foreach($contents as $content)
-        @if($content->user_id==Auth::id())
+            @if($content->user_id==Auth::id())
     <li class="balloon-lef">
-        @if(!is_null($user_image->path))
-        <p class="author"><a href='/image_store/{{$friend_info->id}}'><img src="{{Storage::url($user_image->path)}}"></a><br>{{$user_info->name}}</p>
-        @else
-        <p class="author"><a href='/image_store/{{$friend_info->id}}'><img src=#></a><br>{{$user_info->name}}</p>
-        @endif
+                @if(!is_null($user_image))
+        <p class="author"><a href='/image_store/{{$friend_info->id}}'><img src="{{Storage::url($user_image->path)}}" width="60" height="60"></a><br>{{$user_info->name}}</p>
+                @else
+        <p class="author"><a href='/image_store/{{$friend_info->id}}'><img src="#"></a><br>{{$user_info->name}}</p>
+                @endif
         <p class="balloon">
             {{$content->content}}
         </p>
     </li>
-        @endif
-        @if($content->user_id==$friend_info->id)
+            @endif
+            @if($content->user_id==$friend_info->id)
     <li class="balloon-rig">
         <p class="author"><img src="画像パス"><br>{{$friend_info->name}}</p>
         <p class="balloon">
             {{$content->content}}
         </p>
     </li>
-    @endif
-    @endforeach
+            @endif
+        @endforeach
 </ul>
 <form method="POST" action="/store">
 @csrf
